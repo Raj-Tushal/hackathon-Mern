@@ -1,0 +1,12 @@
+./.env
+./node_modules# Ignore environment files
+.env
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore all files in src folder with specific extension (e.g., .tmp or .snv files)
+src/**/*.snv
