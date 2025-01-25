@@ -1,6 +1,5 @@
-import EmailList from "./components/EmailList.jsx";
-import Navbar from "./components/Navbar.jsx";
-import Home from "./pages/Home.jsx";
+// import EmailList from "./components/EmailList.jsx";
+// import Navbar from "./components/Navbar.jsx";
 
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
@@ -10,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import API from "./utils/api.js";
 import { loginFailure, loginSuccess } from "./redux/Slices/auth.js";
+import LandingPage from "./pages/landingPage/index.jsx";
+import LoanDetail from "./pages/LoanDetail/index.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -35,16 +36,15 @@ function App() {
 
       {/* Dynamic Routes */}
       <BrowserRouter>
-      <Navbar />
+      
         <Routes>
-          <Route index element={<Home />} />  
+          <Route index element={<LandingPage />} />  
           <Route path="/Login" element={<LoginPage />} />
           <Route path="/Register" element={<SignUpPage />} />
-      
+          <Route path="/loan" element={<LoanDetail />} />
         </Routes>
       </BrowserRouter>
 
-      <EmailList />
     </div>
   );
 }

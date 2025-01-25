@@ -18,7 +18,8 @@ app.use(cookieParser())
 
 // routes
 app.use('/api/auth',authRoute)
-// app.use('/api/users',usersRoute)
+app.use('/api/loans',loanRoute)
+app.use('/api/admin',usersRoute)
 // app.use('/api/hotels',hotelsRoute)
 // app.use('/api/rooms',roomsRoute)
 
