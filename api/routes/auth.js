@@ -1,21 +1,17 @@
-import express from 'express'
-import { getByToken, googleAuth, login, register, uploadVideo } from '../controllers/auth.js'
-import verifyToken from '../middlewares/verifyToken.js'
-import upload from '../services/upload.js'
-const router = express.Router()
+import express from "express";
+import { registerUser, loginUser, proceedLoan, changePassword } from "../controllers/auth.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
-// Register user
-router.post('/register',register)
+const router = express.Router();
 
-// Register user
-router.post('/login',login)
+// Register User
+router.post("/register", registerUser);
 
-// Register user
-router.post('/google',googleAuth)
+// Login User
+router.post("/login", loginUser);
 
-// to get user by token
-router.get('/me',verifyToken,getByToken)
+router.post("/proceed", proceedLoan);
 
-router.post('/upload',upload.single('avatar'),verifyToken,uploadVideo)
+router.put("/changePassword", changePassword);
+
 export default router;
-

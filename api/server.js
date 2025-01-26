@@ -4,9 +4,9 @@ import cors from 'cors'
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import connectDb from './utils/connectToDb.js';
-import hotelsRoute from './routes/hotels.js'
 import authRoute from './routes/auth.js'
-import roomsRoute from './routes/rooms.js'
+import loanRoute from './routes/loan.js'
+import usersRoute from './routes/users.js'
 const app =express();
 connectDb()
 
@@ -17,9 +17,9 @@ app.use(cookieParser())
 
 
 // routes
-app.use('/api/auth',authRoute)
-app.use('/api/loans',loanRoute)
-app.use('/api/admin',usersRoute)
+app.use("/api/auth", authRoute); // Authentication routes
+app.use("/api/loans", loanRoute); // Loan-related routes
+app.use("/api/admin", usersRoute);
 // app.use('/api/hotels',hotelsRoute)
 // app.use('/api/rooms',roomsRoute)
 

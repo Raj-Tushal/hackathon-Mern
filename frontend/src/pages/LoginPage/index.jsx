@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginFailure, loginStart, loginSuccess } from "../../redux/Slices/auth";
 import API from "../../utils/api";
-import { signInWithGooglePopup } from "../../utils/firebase";
-import { toast, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import PopUp from "./inputPop";
 
 function LoginForm() {
-  const dispatch = useDispatch();
-  const { loading, error, isAuthenticated, userData } = useSelector((state) => state.auth);
+  // const dispatch = useDispatch();
+  // const { loading, error, isAuthenticated, userData } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
    const [open, setOpen] = useState(false);
   
@@ -30,47 +27,28 @@ function LoginForm() {
 
       // // Save token to localStorage
       // localStorage.setItem("token", token);
+const res = await API.post("/auth/login", { email, password });
 
+if(res.status){
+  toast.success(res.message);
+  setOpen(true);
+  toast.success(" Enter a new password sent by an email.", { position: "top-center", duration: 10000 });
+} else{
+  return toast.error(res.message);
+}
       // // Redirect or update app state
       // dispatch(loginSuccess(response.data.data));
       // toast.success("Login successful!"); // Show success toast
-      setOpen(true);
-      toast.success(" Enter a new password sent by an email.", { position: "top-center", duration: 10000 });
   
       // toast.success("Login successful!");
     } catch (error) {
-      dispatch(loginFailure(error));
-      toast.error("Login failed!");
+      // dispatch(loginFailure(error));
+      toast.error(error.message);
     }
   };
 
   // Google login handler
-  const handleGoogleLogin = async () => {
-    dispatch(loginStart());
-    try {
-      const googleResponse = await signInWithGooglePopup();
-      const { displayName, email, photoURL } = googleResponse.user;
-
-      // Send Google user details to the backend
-      const response = await API.post("/auth/google", {
-        userName: displayName,
-        email: email,
-        profilePic: photoURL,
-      });
-
-      const token = response.data.token;
-
-      // Save token to localStorage
-      localStorage.setItem("token", token);
-
-      // Dispatch success and navigate
-      dispatch(loginSuccess(response.data.data));
-      toast.success("Login successful!");
-      // navigate("/dashboard");
-    } catch (error) {
-      dispatch(loginFailure(error || "Google login failed"));
-    }
-  };
+ 
 
   return (
     <section className="bg-gray-50 my-10 dark:bg-[#121212]">
@@ -163,7 +141,7 @@ function LoginForm() {
               <div className="px-6 sm:px-0 max-w-sm">
                 <button
                   type="button"
-                  onClick={handleGoogleLogin}
+              
                   className="text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between mr-2 mb-2"
                 >
                   <svg

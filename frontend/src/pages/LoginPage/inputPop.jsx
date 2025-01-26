@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import API from '../../utils/api';
 
 function inputPop({ setOpen }) {
   // State to store new password and confirm password values
@@ -25,9 +26,15 @@ function inputPop({ setOpen }) {
     setOpen(false);
   };
 
-  const onSubmit = () => {
-    navigate("/loan");
-    toast.success("Check your email to create a new password.", { position: "top-center", duration: 10000 });
+  const onSubmit = async() => {
+   try {
+    const res = await API.post('/auth/changePassword',{oldPassword:confirmPassword, newPassword:newPassword});
+      //  navigate("/loan");
+      //  toast.success(res.message, { position: "top-center", duration: 10000 });
+      toast.success(res.message, { position: "top-center", duration: 10000 });
+   } catch (error) {
+    toast.error(error.message);
+   }
   };
 
   return (

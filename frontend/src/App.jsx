@@ -18,18 +18,18 @@ function App() {
     
 
   // On App Load (Check if user is logged in)
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      // Verify token and fetch user details if necessary
-      API.get("/auth/me")
-        .then((response) => dispatch(loginSuccess(response.data.data)))
-        .catch((error) => {
-          dispatch(loginFailure(error));
-          localStorage.removeItem("token");
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     // Verify token and fetch user details if necessary
+  //     API.get("/auth/me")
+  //       .then((response) => dispatch(loginSuccess(response.data.data)))
+  //       .catch((error) => {
+  //         dispatch(loginFailure(error));
+  //         localStorage.removeItem("token");
+  //       });
+  //   }
+  // }, []);
   const light = useSelector((state) => state.themeReducer.light);
   return (
     <div className={light ? "" : "dark" }>

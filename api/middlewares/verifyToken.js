@@ -1,26 +1,37 @@
 import jwt from "jsonwebtoken";
-import { sendError, sendSuccess } from "../utils/response.js";
+import { sendError } from "../utils/response.js";
 
 const verifyToken = (req, res, next) => {
+  // Step 1: Get the authorization header
   const authHeader = req.headers.authorization;
+
+  // Check if token exists
   if (!authHeader) {
-    console.log("No token provided");
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(401).json(sendError({ message: "No token provided" }));
   }
 
+  // Step 2: Extract token from "Bearer <token>"
   const token = authHeader.split(" ")[1];
-//   console.log("Extracted Token:", token);
+  if (!token) {
+    return res.status(401).json(sendError({ message: "Token format is invalid. Expected 'Bearer <token>'" }));
+  }
 
-  jwt.verify(token, process.env.JWT, (err, decoded) => {
+  // Step 3: Verify the token
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-    //   console.log("Token verification failed:", err.message);
-      return res.status(403).json({ message: "Invalid token" });
+      // Log the error for debugging in development mode
+      if (process.env.NODE_ENV === "development") {
+        console.log("Token verification failed:", err.message);
+      }
+      return res.status(403).json(sendError({ message: "Invalid token" }));
     }
+
+    // Step 4: Attach decoded user data to the request object
     req.user = decoded;
-// console.log("Decoded User:", req.user);
+    
+    // Step 5: Move to the next middleware or route handler
     next();
   });
 };
-
 
 export default verifyToken;

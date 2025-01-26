@@ -1,12 +1,12 @@
 import express from "express";
 import {
   registerUser,
-  loginUser,
   submitLoanRequest,
   addGuarantors,
   getLoanDetails,
   generateSlip,
-} from "../controllers/userController.js";
+} from "../controllers/user.js";
+import { loginUser } from "../controllers/auth.js";
 
 const router = express.Router();
 

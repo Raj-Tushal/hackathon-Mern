@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import API from '../../utils/api';
 function PopUp({ setOpen }) {
   // State to store form input values
   const [cnic, setCnic] = useState('');
@@ -19,9 +20,20 @@ function PopUp({ setOpen }) {
     setOpen(false);
   };
 
-  const onSubmit = ()=>{
-navigate("/login")
-toast.success("check your gmail",{position:"top-center"},{duration:10000});
+  const onSubmit = async()=>{
+
+    try {
+        const res = await API.post('/auth/proceed',{cnic,email,name})
+        if(res.status){
+            navigate("/login")
+            toast.success("check your gmail",{position:"top-center"},{duration:5000});
+        }else{
+            toast.error(res.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
+
   }
 
   return (
